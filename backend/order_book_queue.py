@@ -18,9 +18,9 @@ class OrderBookThread(Thread):
         # print('Ending Queue Thread')
 
 class OrderBookQueue(object):
-    def __init__(self, **kwargs):
+    def __init__(self, order_book):
         self.order_queue = queue.Queue()
-        self.order_book = kwargs.get("order_book", OrderBook())
+        self.order_book = order_book
         self.stopFlag = threading.Event()
         self.order_book_thread = OrderBookThread(self.stopFlag, self.order_book, self.order_queue)
         self.order_book_thread .start()

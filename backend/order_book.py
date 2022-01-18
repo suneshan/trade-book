@@ -11,7 +11,6 @@ class OrderBook(object):
         """
         self.buyers = defaultdict(list)
         self.sellers = defaultdict(list)
-        # self.unprocessed_orders = queue.Queue()
         self.trade_queue = trade_queue
         self.order_id = 0
         self.max_buy_orders = 10
@@ -80,7 +79,7 @@ class OrderBook(object):
                 trade = self.execute_match(incoming_order, book_order)
                 incoming_order.size = max(0, incoming_order.size-trade.size)
                 book_order.size = max(0, book_order.size-trade.size)
-                self.trades.put(trade)
+                self.trade_queue.create(trade)
             levels[price] = [o for o in orders_at_level if o.size > 0]
             if len(levels[price]) == 0:
                 levels.pop(price)

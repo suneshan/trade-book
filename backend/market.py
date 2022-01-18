@@ -1,9 +1,11 @@
 import threading
 from threading import Thread
 import random
+from order_book import OrderBook
 from order import Order
 from order_type import OrderType
 from order_book_queue import OrderBookQueue
+from trade_queue import TradeQueue
 
 class MarketPriceThread(Thread):
     def __init__(self, event, market_price):
@@ -55,7 +57,9 @@ class MarketPrice(object):
 
 class Market(object):
     def __init__(self):
-        self.ob_queue = OrderBookQueue()
+        self.trade_queue = TradeQueue()
+        self.order_book = OrderBook(self.trade_queue)
+        self.ob_queue = OrderBookQueue(self.order_book)
         self.market_price = MarketPrice()
         self.stopFlag = threading.Event()
         self.market_buyer_thread = MarketBuyerThread(self.stopFlag, self.market_price, self.ob_queue)
@@ -69,7 +73,10 @@ class Market(object):
         self.market_price.stop()
 
     def get_order_book(self):
-         return self.ob_queue.get_order_book()
+         return self.order_book
+
+    def get_trades(self):
+        return self.trade_queue
 
     def get_market_price(self):
         return self.market_price.get()

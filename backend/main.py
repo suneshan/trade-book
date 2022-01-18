@@ -8,28 +8,7 @@ from order import Order
 
 if __name__ == '__main__':
     market = Market()
-    # ob_queue = OrderBookQueue()
-    dsp = DisplayBook(market.get_order_book())
-    # orders = [Order(OrderType.BUY, 1., 10),
-    #         Order(OrderType.BUY, 1., 10),
-    #         Order(OrderType.BUY, 5., 10),
-    #         Order(OrderType.SELL, 12., 5),
-    #         Order(OrderType.SELL, 15., 10),
-    #         Order(OrderType.BUY, 11., 10),
-    #         Order(OrderType.SELL, 20., 10),
-    #         Order(OrderType.SELL, 30., 10),
-    #         Order(OrderType.SELL, 40., 10),
-    #         Order(OrderType.SELL, 50., 10),
-    #         Order(OrderType.SELL, 60., 10),
-    #         Order(OrderType.SELL, 70., 10),
-    #         Order(OrderType.SELL, 80., 10),
-    #         Order(OrderType.SELL, 100., 10),
-    #         Order(OrderType.SELL, 90., 10)]
-    # for order in orders:
-    #     ob_queue.place_order(order)
-    # ob_queue.place_order(Order(OrderType.SELL, 5., 2))
-    # ob_queue.place_order(Order(OrderType.BUY, 15., 2))
-
+    dsp = DisplayBook(market.get_order_book(), market.get_trades())
     exit=False
     while not exit:
         print ('''

@@ -8,8 +8,9 @@ class DisplaySummary(object):
         self.buy_amount = 0
 
 class DisplayBook(object):
-    def __init__(self, order_book):
+    def __init__(self, order_book, trades):
         self.order_book = order_book
+        self.trades = trades
 
     def show_order_book(self):
         # self.show_seller_orders()
@@ -73,7 +74,7 @@ class DisplayBook(object):
                     three = "" if display_summary.sell_amount==0 else display_summary.sell_amount))
 
     def show_trades(self):
-        print(self.order_book.trades.qsize())
-        print(list(self.order_book.trades.queue))
-        print(self.order_book.trades.queue[1])
+        print(self.trades.get_queue().qsize())
+        print(list(self.trades.get_queue().queue))
+        print(self.trades.get_queue().queue[1])
  
