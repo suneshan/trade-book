@@ -1,11 +1,28 @@
 from display_book import DisplayBook
-from order_type import OrderType
-from order_book import OrderBook
-from order_book_queue import OrderBookQueue
 from market import Market
-from order import Order
+from utils import Singleton
+
+class TestSingle(object, metaclass=Singleton):
+    def __init__(self):
+        print('Constructor______')
+        self.amount = 0
+
+    def set_amount(self, amt):
+        self.amount = amt
+
+    def get_amount(self):
+        return self.amount
 
 if __name__ == '__main__':
+
+    instance1 = TestSingle()
+    instance1.set_amount(1000)
+    print(instance1.get_amount())
+
+    instance2 = TestSingle()
+    instance2.set_amount(2000)
+    print(instance1.get_amount())
+
     market = Market()
     dsp = DisplayBook(market.get_order_book(), market.get_trades())
     exit=False

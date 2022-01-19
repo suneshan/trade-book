@@ -6,16 +6,7 @@ from order import Order
 from order_type import OrderType
 from order_book_queue import OrderBookQueue
 from trade_queue import TradeQueue
-
-class MarketPriceThread(Thread):
-    def __init__(self, event, market_price):
-        Thread.__init__(self)
-        self.stopped = event
-        self.market_price = market_price
-
-    def run(self):
-        while not self.stopped.wait(5):
-            self.market_price.set()
+from utils import Singleton
 
 class MarketSellerThread(Thread):
     def __init__(self, event, market_price, order_book_queue):
@@ -39,6 +30,16 @@ class MarketBuyerThread(Thread):
         while not self.stopped.wait(0.9):
             self.order_book_queue.place_order(Order(OrderType.BUY, self.market_price.get() - random.randrange(1, 100), random.randrange(1, 100)))
 
+class MarketPriceThread(Thread):
+    def __init__(self, event, market_price):
+        Thread.__init__(self)
+        self.stopped = event
+        self.market_price = market_price
+
+    def run(self):
+        while not self.stopped.wait(5):
+            self.market_price.set()
+
 class MarketPrice(object):
     def __init__(self):
         self.current = 50000
@@ -47,7 +48,7 @@ class MarketPrice(object):
         self.market_price_thread.start()
 
     def set(self):
-        self.current = self.current + (random.randrange(-200, +200))
+        self.current = self.current + (random.randrange(-100, +100))
 
     def get(self):
         return self.current
@@ -55,7 +56,7 @@ class MarketPrice(object):
     def stop(self):
         self.stopFlag.set()
 
-class Market(object):
+class Market(object, metaclass=Singleton):
     def __init__(self):
         self.trade_queue = TradeQueue()
         self.order_book = OrderBook(self.trade_queue)
