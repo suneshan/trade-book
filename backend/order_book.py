@@ -12,13 +12,8 @@ class OrderBook(object):
         self.__buyers = defaultdict(list)
         self.__sellers = defaultdict(list)
         self.trade_queue = trade_queue
-        self.order_id = 0
         self.max_buy_orders = 10
         self.max_sell_orders = 10
-
-    def new_order_id(self):
-        self.order_id += 1
-        return self.order_id
 
     @property
     def max_bid(self):
@@ -45,7 +40,6 @@ class OrderBook(object):
     def process_order(self, incoming_order):
         """ Main processing function. If incoming_order matches then delegate to process_match """
         incoming_order.timestamp = utils.get_timestamp()
-        incoming_order.order_id = self.new_order_id()
         if incoming_order.side == OrderType.BUY:
             if incoming_order.price >= self.min_offer and self.__sellers:
                 self.__process_match(incoming_order)
@@ -90,7 +84,7 @@ class OrderBook(object):
 
     def __execute_match(self, incoming_order, book_order):
         trade_size = min(incoming_order.size, book_order.size)
-        return Trade(incoming_order.side, book_order.price, trade_size, incoming_order.order_id, book_order.order_id, utils.get_timestamp())
+        return Trade(incoming_order.side, book_order.price, trade_size, incoming_order.order_id, book_order.order_id, utils.get_timestamp(), incoming_order.wallet_id, book_order.wallet_id)
 
 
 
