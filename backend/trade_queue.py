@@ -9,3 +9,4 @@ class TradeQueue(object):
 
     def get_queue(self):
         return self.trade_queue
+        

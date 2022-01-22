@@ -1,8 +1,8 @@
 from trade import Trade
-import queue
 import utils
 from collections import defaultdict
 from order_type import OrderType
+from itertools import count
 
 class OrderBook(object):
     def __init__(self, trade_queue):
@@ -89,3 +89,15 @@ class OrderBook(object):
 
 
     
+if __name__ == "__main__": 
+    testorders = defaultdict(list)
+    order = (OrderType.SELL, 50000, 0.1)
+    testorders[50000].append(order)
+    order = (OrderType.SELL, 50000, 0.2)
+    testorders[50000].append(order)
+    order = (OrderType.SELL, 60000, 0.5)
+    testorders[60000].append(order)
+    print (testorders[50000])
+    testorders[50000].pop(1)
+    print (testorders[50000])
+   

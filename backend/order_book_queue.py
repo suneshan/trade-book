@@ -1,4 +1,3 @@
-from order_book import OrderBook
 import queue
 import threading
 from threading import Thread
@@ -11,11 +10,9 @@ class OrderBookThread(Thread):
         self.order_queue = order_queue
 
     def run(self):
-        # print('Starting Queue Thread')
         while not self.stopped.wait(0.00001):
             while not self.order_queue.empty():
                 self.order_book.process_order(self.order_queue.get())
-        # print('Ending Queue Thread')
 
 class OrderBookQueue(object):
     def __init__(self, order_book):
